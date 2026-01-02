@@ -1,0 +1,8 @@
+django
+djangorestframework
+openai
+python-dotenv
+django-cors-headers
+channels
+channels-redis
+pillow

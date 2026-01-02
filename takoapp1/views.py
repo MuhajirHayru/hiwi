@@ -10,6 +10,40 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Product, Cart, CartItem, Order, User
 from .serializers import ProductSerializer, OrderSerializer
+from rest_framework.generics import ListAPIView
+from .models import Order
+from .serializers import OrderSerializer
+from rest_framework.permissions import IsAdminUser
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class MarkDeliveredAPIView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def patch(self, request, pk):
+        try:
+            order = Order.objects.get(id=pk)
+            if order.status != "PENDING":
+                return Response({"error": "Only pending orders can be marked delivered"}, status=status.HTTP_400_BAD_REQUEST)
+
+            order.status = "DELIVERED"
+            order.save()
+            return Response({"message": f"Order #{order.id} marked as DELIVERED", "status": order.status})
+        except Order.DoesNotExist:
+            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class PendingOrdersAPIView(ListAPIView):
+    """
+    Lists all orders with status = PENDING.
+    """
+    serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return Order.objects.filter(status="PENDING").select_related("cart").prefetch_related("cart__items__product").order_by('-created_at')
 
 # ======================
 # PRODUCT VIEWS

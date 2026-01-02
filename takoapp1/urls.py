@@ -29,6 +29,9 @@ urlpatterns = [
     path("admin/create-sales-user/", CreateSalesUserAPIView.as_view()),
     path("confirm/<int:pk>/",Confirm.as_view()),
 
-    #path to look the ordered items
+    #here the pai for delivering and and pending 
+    path("admin/orders/pending/", PendingOrdersAPIView.as_view(), name="pending-orders"),
+    path("admin/order/mark-delivered/<int:pk>/", MarkDeliveredAPIView.as_view(), name="mark-delivered"),
+
     
 ]
