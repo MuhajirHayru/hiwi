@@ -77,8 +77,7 @@ class Order(models.Model):
     ]
 
     customer_name = models.CharField(max_length=255)
-    cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
-    items= models.ManyToManyField(CartItem)
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, related_name="order")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
 
     payment_screenshot = models.ImageField(upload_to="payments/", null=True, blank=True)

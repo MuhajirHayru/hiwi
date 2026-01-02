@@ -14,6 +14,17 @@ from .serializers import ProductSerializer, OrderSerializer
 # ======================
 # PRODUCT VIEWS
 # ======================
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser
+
+
+class OrderListAPIView(ListAPIView):
+    queryset = Order.objects.select_related("cart").prefetch_related(
+        "cart__items__product"
+    )
+    serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
+
 
 class ProductCreateAPIView(generics.CreateAPIView):
     """Admin role to create products with an image."""

@@ -28,3 +28,18 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+# below this i am doing the details of the order and the lists of the order
+class OrderSerializer(serializers.ModelSerializer):
+    cart = CartSerializer(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = [
+            "id",
+            "customer_name",
+            "status",
+            "cart",
+            "payment_screenshot",
+            "created_at",
+        ]
+        

@@ -18,7 +18,8 @@ urlpatterns = [
     path("order/create/", OrderCreateAPIView.as_view()),
     #this is the api to upload screensheet of the payment when they order
     #path("order/upload-payment/<int:order_id>/", UploadPaymentAPIView.as_view()),
-    
+    path("admin/orders/", OrderListAPIView.as_view()),
+
     path("admin/order/confirm/<int:pk>/", ConfirmOrderAPIView.as_view()),
 
     # Analytics
